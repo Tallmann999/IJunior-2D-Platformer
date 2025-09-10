@@ -5,6 +5,7 @@ public class PlayerMover : MonoBehaviour
 {
     [SerializeField]private float _speedMovement;
     [SerializeField]private float _jumpHeight;
+    [SerializeField]private SpriteRenderer _spriteRenderer;
 
     private Rigidbody2D _rigidbody2D;
     private Vector2 _direction;
@@ -20,9 +21,24 @@ public class PlayerMover : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
+    private void Flip()
+    {
+        if (_direction.x<0)
+        {
+            _spriteRenderer.flipX = true;
+        }
+        else
+        {
+            _spriteRenderer.flipX=false;
+        }
+    }
 
     public void Move()
     {
+        Flip();
+       
+        _isMoving = true;
+        _isGrounded = true;
         _direction.x = Input.GetAxis("Horizontal");
        _rigidbody2D.linearVelocity = new Vector2(_direction.x * _speedMovement, _rigidbody2D.linearVelocity.y);
     }

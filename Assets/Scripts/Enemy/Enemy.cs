@@ -1,16 +1,23 @@
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyMover))]
 public class Enemy : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    //[SerializeField]private EnemyPatrol _target;
+    //private EnemyMover _enemyMover;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //private void Awake()
+    //{
+    //    _target = GetComponent<EnemyPatrol>();
+    //}
+
+    //private void Start()
+    //{
+    //    SetTarget(_target); 
+    //}
+
+    //public void SetTarget(EnemyPatrol target)// Где вызывать ????
+    //{
+    //    _enemyMover.SetTarget(target.transform);
+    //}
 }
