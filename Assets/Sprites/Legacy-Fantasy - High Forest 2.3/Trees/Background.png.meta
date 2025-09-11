@@ -168,9 +168,9 @@ TextureImporter:
       name: Background_3
       rect:
         serializedVersion: 2
-        x: 224
+        x: 225
         y: 0
-        width: 127
+        width: 126
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -190,9 +190,9 @@ TextureImporter:
       name: Background_4
       rect:
         serializedVersion: 2
-        x: 800
+        x: 801
         y: 0
-        width: 96
+        width: 95
         height: 243
       alignment: 9
       pivot: {x: 0.5000038, y: 0.500001}
@@ -236,7 +236,7 @@ TextureImporter:
         serializedVersion: 2
         x: 576
         y: 0
-        width: 127
+        width: 126
         height: 256
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -256,9 +256,9 @@ TextureImporter:
       name: Background_8
       rect:
         serializedVersion: 2
-        x: 704
+        x: 703
         y: 0
-        width: 96
+        width: 98
         height: 241
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

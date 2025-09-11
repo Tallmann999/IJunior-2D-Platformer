@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMover : MonoBehaviour
 {
@@ -24,6 +25,11 @@ public class EnemyMover : MonoBehaviour
         }
     }
 
+    public void SetTarget(Transform target)
+    {
+        _target = target;
+    }
+
     private void Flip()
     {
         if (_target != null)
@@ -31,11 +37,6 @@ public class EnemyMover : MonoBehaviour
             Vector3 direction = (_target.position - transform.position).normalized;
             _spriteRenderer.flipX = direction.x < 0;
         }
-    }
-
-    public void SetTarget(Transform target)
-    {
-        _target = target;
     }
 
     private void MoveToTarget()

@@ -1,12 +1,9 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover))]
 public class InputReader : MonoBehaviour
 {
     private const string Horizontal = nameof(Horizontal);
-    //private const string Vertical = nameof(Vertical);
-
     private PlayerMover _playerMover;
 
     private void Awake()
@@ -22,7 +19,7 @@ public class InputReader : MonoBehaviour
 
     private void JumpControl()
     {
-        if (Input.GetKeyDown(KeyCode.Space)/* && _playerMover.IsGrounded==false && _playerMover.IsMoving*/)
+        if (Input.GetKeyDown(KeyCode.Space) && _playerMover.IsGrounded == true)
         {
             _playerMover.Jump();
         }

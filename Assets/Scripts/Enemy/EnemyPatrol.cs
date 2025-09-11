@@ -3,8 +3,9 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private Transform _pathTarget;
-    //[SerializeField] private float _movementSpeed;
     [SerializeField] private Transform[] _points;
+    [SerializeField] private float _movingSpeed = 2f;
+
     private int _currentPointIndex;
     private EnemyMover _enemyMover;
 
@@ -21,8 +22,9 @@ public class EnemyPatrol : MonoBehaviour
 
     private void Update()
     {
-        // Проверяем достижение цели и переключаемся на следующую
-        if (Vector2.Distance(transform.position, _points[_currentPointIndex].position) < 0.1f)
+        MoveToPoints();
+
+        if (transform.position == _points[_currentPointIndex].position)
         {
             _currentPointIndex = (_currentPointIndex + 1) % _points.Length;
             SetNextTarget();
@@ -41,9 +43,18 @@ public class EnemyPatrol : MonoBehaviour
 
     private void SetNextTarget()
     {
-        if (_points.Length > 0)
+        if (_points.Length > 0 && _enemyMover != null)
         {
             _enemyMover.SetTarget(_points[_currentPointIndex]);
         }
+    }
+
+    private void MoveToPoints()
+    {
+        if (_points.Length == 0) return;
+
+        Transform target = _points[_currentPointIndex];
+        transform.position = Vector3.MoveTowards(transform.position, target.position,
+            _movingSpeed * Time.deltaTime);
     }
 }
