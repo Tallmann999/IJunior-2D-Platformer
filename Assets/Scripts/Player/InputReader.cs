@@ -22,7 +22,7 @@ public class InputReader : MonoBehaviour
 
     private void JumpControl()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)/* && _playerMover.IsGrounded==false && _playerMover.IsMoving*/)
         {
             _playerMover.Jump();
         }

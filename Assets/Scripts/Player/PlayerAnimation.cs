@@ -22,21 +22,26 @@ public class PlayerAnimation : MonoBehaviour
         _horizontalMove = Input.GetAxis(Horizontal);
         Idle();
         Move();
+        Jump();
     }
 
     public void Move()
     {
-        //float horizontalMove = Input.GetAxis(Horizontal);
-
-        if (_playerMover.IsMoving==true)
+        if (_playerMover.IsMoving==true && _playerMover.IsGrounded==true)
             _animator.SetFloat(Speed, Mathf.Abs(_horizontalMove));
-        //if (horizontalMove < 0 || horizontalMove > 0)
-        //    _animator.SetFloat(Speed, horizontalMove);
     }
 
     private void Jump()
     {
+        if (_playerMover.IsGrounded ==false)
+        {
+            _animator.SetTrigger("Jump");
+        }
+        //else
+        //{
+        //    _animator.SetBool("Jump",false);
 
+        //}
     }
     public void Idle()
     {
