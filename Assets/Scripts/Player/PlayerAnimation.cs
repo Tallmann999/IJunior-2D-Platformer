@@ -1,48 +1,37 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMover))]
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimation : MonoBehaviour
 {
-    private const string Horizontal = nameof(Horizontal);
-    private const string Speed = nameof(Speed);
-    private const string JumpOne = nameof(Jump);
+    //private const string Horizontal = nameof(Horizontal);
+    //private const string Speed = nameof(Speed);
+    //private const string JumpOne = nameof(Jump);
 
     private Animator _animator;
-    private PlayerMover _playerMover;
-    private float _horizontalMove;
+    //private float _horizontalMove;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _playerMover = GetComponent<PlayerMover>();
     }
 
-    private void Update()
+    public  void SetSpeed(float speed)
     {
-        _horizontalMove = Input.GetAxis(Horizontal);
-
-        Idle();
-        Move();
-        Jump();
+        _animator.SetFloat(PlayerAnimatorData.Params.Speed, Mathf.Abs(speed));
     }
 
-    private void Move()
+    public void SetVerticalVelocity(float velocity)
     {
-        if (_playerMover.IsMoving == true && _playerMover.IsGrounded == true)
-            _animator.SetFloat(Speed, Mathf.Abs(_horizontalMove));
+        _animator.SetFloat(PlayerAnimatorData.Params.VerticalVelocity, velocity);
     }
 
-    private void Jump()
+    public void SetIsGrounded(bool isGrounded)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _animator.SetTrigger(JumpOne);
-        }
+        _animator.SetBool(PlayerAnimatorData.Params.IsGrounded, isGrounded);
     }
 
-    private void Idle()
+    public void TriggerJump()
     {
-        _animator.SetFloat(Speed, Mathf.Abs(_horizontalMove));
+        _animator.SetTrigger(PlayerAnimatorData.Params.Jump);
     }
 }

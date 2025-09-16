@@ -1,15 +1,13 @@
+using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMover))]
 public class InputReader : MonoBehaviour
 {
     private const string Horizontal = nameof(Horizontal);
-    private PlayerMover _playerMover;
+    private const KeyCode KeyCoder = KeyCode.Space;
 
-    private void Awake()
-    {
-        _playerMover = GetComponent<PlayerMover>();
-    }
+    public event Action<float> HorizontalMovement;
+    public event Action<bool> Jumping;
 
     private void Update()
     {
@@ -19,9 +17,9 @@ public class InputReader : MonoBehaviour
 
     private void JumpControl()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _playerMover.IsGrounded == true)
+        if (Input.GetKeyDown(KeyCoder) )
         {
-            _playerMover.Jump();
+            Jumping?.Invoke(true);
         }
     }
 
@@ -31,7 +29,7 @@ public class InputReader : MonoBehaviour
 
         if (horizontalDirection != 0)
         {
-            _playerMover.Move();
+            HorizontalMovement?.Invoke(horizontalDirection);
         }
     }
 }

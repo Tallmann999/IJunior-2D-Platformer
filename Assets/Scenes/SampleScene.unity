@@ -667,7 +667,7 @@ Transform:
   m_GameObject: {fileID: 141968078}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.014, y: 0.1731, z: 0}
+  m_LocalPosition: {x: -0.014, y: 0.202, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4141,7 +4141,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
@@ -4238,11 +4238,11 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.2340001, y: 0.812, z: -2}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalPosition: {x: 2.11685, y: 0.8640599, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7878350318915243299}
+  m_Father: {fileID: 1334321154}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &521509346 stripped
 Transform:
@@ -4696,6 +4696,7 @@ GameObject:
   - component: {fileID: 676285855}
   - component: {fileID: 676285854}
   - component: {fileID: 676285853}
+  - component: {fileID: 676285860}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -4902,6 +4903,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &676285860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 676285851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b1f55dc2cbaff4c86f2abed77b1d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &676920234 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3276820498223311593, guid: 817a6f04a3ac184479019a711509fe6f, type: 3}
@@ -5201,6 +5214,7 @@ GameObject:
   - component: {fileID: 692340543}
   - component: {fileID: 692340542}
   - component: {fileID: 692340541}
+  - component: {fileID: 692340548}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Untagged
@@ -5407,6 +5421,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &692340548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692340539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b1f55dc2cbaff4c86f2abed77b1d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &706202846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6086,6 +6112,7 @@ GameObject:
   - component: {fileID: 888517878}
   - component: {fileID: 888517875}
   - component: {fileID: 888517882}
+  - component: {fileID: 888517883}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Untagged
@@ -6292,6 +6319,18 @@ MonoBehaviour:
   - {fileID: 688376484}
   - {fileID: 1368189473}
   _movingSpeed: 2
+--- !u!114 &888517883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888517874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b1f55dc2cbaff4c86f2abed77b1d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &903295040 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3276820498223311593, guid: 817a6f04a3ac184479019a711509fe6f, type: 3}
@@ -6717,6 +6756,7 @@ GameObject:
   - component: {fileID: 1037911678}
   - component: {fileID: 1037911677}
   - component: {fileID: 1037911676}
+  - component: {fileID: 1037911683}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -6923,6 +6963,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1037911683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037911674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b1f55dc2cbaff4c86f2abed77b1d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1046559728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3276820498223311593, guid: 817a6f04a3ac184479019a711509fe6f, type: 3}
@@ -6954,6 +7006,7 @@ GameObject:
   - component: {fileID: 1062562758}
   - component: {fileID: 1062562757}
   - component: {fileID: 1062562756}
+  - component: {fileID: 1062562763}
   m_Layer: 0
   m_Name: Monster
   m_TagString: Untagged
@@ -7160,6 +7213,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1062562763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062562754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b1f55dc2cbaff4c86f2abed77b1d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1077182703
 GameObject:
   m_ObjectHideFlags: 0
@@ -35947,6 +36012,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3276820498223311593, guid: 817a6f04a3ac184479019a711509fe6f, type: 3}
   m_PrefabInstance: {fileID: 1383876263}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1334321153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1334321154}
+  - component: {fileID: 1334321155}
+  m_Layer: 0
+  m_Name: CameraHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1334321154
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334321153}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.11685, y: -1.09406, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 519420032}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1334321155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334321153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6367b1b87603fe8469153b1e99343701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 7878350318915243299}
+  offset: {x: 0, y: 0, z: -10}
 --- !u!1001 &1342015843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37976,7 +38088,7 @@ GameObject:
   - component: {fileID: 1491777078}
   - component: {fileID: 1491777081}
   - component: {fileID: 1491777080}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43834,7 +43946,7 @@ GameObject:
   - component: {fileID: 1845612018}
   - component: {fileID: 1845612017}
   - component: {fileID: 1845612019}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground 02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98527,7 +98639,6 @@ Transform:
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 519420032}
   - {fileID: 141968079}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -98555,10 +98666,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee3ba3cb102ce241836b3fe01ce20eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 3626916396422406858}
-  _checkPoint: {fileID: 141968079}
   _speedMovement: 10
   _jumpHeight: 8
+  _groundCheckRadius: 0.2
+  _groundCheck: {fileID: 141968079}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &7878350318915243302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98673,3 +98787,4 @@ SceneRoots:
   - {fileID: 170544920}
   - {fileID: 1262823905}
   - {fileID: 349676695}
+  - {fileID: 1334321154}
