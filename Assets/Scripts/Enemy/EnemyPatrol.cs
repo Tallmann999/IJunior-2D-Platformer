@@ -35,6 +35,7 @@ public class EnemyPatrol : MonoBehaviour
     private void InitPoint()
     {
         _points = new Transform[_pathTarget.childCount];
+
         for (int i = 0; i < _points.Length; i++)
         {
             _points[i] = _pathTarget.GetChild(i);

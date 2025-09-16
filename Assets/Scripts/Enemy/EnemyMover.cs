@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rotation))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMover : MonoBehaviour
 {
@@ -8,12 +8,13 @@ public class EnemyMover : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private Transform _target;
-    private SpriteRenderer _spriteRenderer;
+    private Rotation _rotation;
+    private float _horizontalDirection;
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _rotation = GetComponent<Rotation>();
     }
 
     private void FixedUpdate()
@@ -21,7 +22,6 @@ public class EnemyMover : MonoBehaviour
         if (_target != null)
         {
             MoveToTarget();
-            Flip();
         }
     }
 
@@ -29,19 +29,13 @@ public class EnemyMover : MonoBehaviour
     {
         _target = target;
     }
-
-    private void Flip()
-    {
-        if (_target != null)
-        {
-            Vector3 direction = (_target.position - transform.position).normalized;
-            _spriteRenderer.flipX = direction.x < 0;
-        }
-    }
-
+   
     private void MoveToTarget()
     {
         Vector2 direction = (_target.position - transform.position).normalized;
+        _horizontalDirection =direction.x;
+
+        _rotation.RotationInspector(_horizontalDirection);
         Vector2 movement = direction * _movementSpeed * Time.fixedDeltaTime;
         _rigidbody2D.MovePosition(_rigidbody2D.position + movement);
     }
