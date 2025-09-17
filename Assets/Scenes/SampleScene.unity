@@ -4716,11 +4716,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pathTarget: {fileID: 1990288629}
-  _points:
-  - {fileID: 340346293}
-  - {fileID: 203488632}
-  - {fileID: 822994877}
-  _movingSpeed: 2
+  _arrivalThreshold: 0.1
+  _waitTime: 0.5
 --- !u!114 &676285854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5745,7 +5742,7 @@ Transform:
   m_GameObject: {fileID: 855191862}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.9185028, y: 0.9398999, z: 0}
+  m_LocalPosition: {x: 2.9185028, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6063,11 +6060,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pathTarget: {fileID: 855191864}
-  _points:
-  - {fileID: 782096093}
-  - {fileID: 688376484}
-  - {fileID: 1368189473}
-  _movingSpeed: 2
+  _arrivalThreshold: 0.1
+  _waitTime: 0.5
 --- !u!114 &888517883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6541,11 +6535,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pathTarget: {fileID: 875604138}
-  _points:
-  - {fileID: 1824129247}
-  - {fileID: 1898981404}
-  - {fileID: 994464842}
-  _movingSpeed: 2
+  _arrivalThreshold: 0.1
+  _waitTime: 0.5
 --- !u!114 &1037911677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6791,11 +6782,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pathTarget: {fileID: 1439467940}
-  _points:
-  - {fileID: 1711397887}
-  - {fileID: 252957045}
-  - {fileID: 49087428}
-  _movingSpeed: 2
+  _arrivalThreshold: 0.1
+  _waitTime: 0.5
 --- !u!114 &1062562757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98277,6 +98265,7 @@ GameObject:
   - component: {fileID: 7878350318915243306}
   - component: {fileID: 7878350318915243307}
   - component: {fileID: 7878350318915243305}
+  - component: {fileID: 7878350318915243308}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -98326,8 +98315,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speedMovement: 10
   _jumpHeight: 8
-  _groundCheckRadius: 0.2
-  _groundDetector: {fileID: 141968080}
 --- !u!114 &7878350318915243302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98440,6 +98427,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c6ec1174060c949b4d720deaea106a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7878350318915243308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6969460405890508102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4fa1c637bb70d40a37bdd49c2525ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _groundDetector: {fileID: 141968080}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

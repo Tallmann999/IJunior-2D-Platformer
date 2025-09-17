@@ -4,7 +4,7 @@ using UnityEngine;
 public class InputReader : MonoBehaviour
 {
     private const string Horizontal = nameof(Horizontal);
-    private const KeyCode KeyCoder = KeyCode.Space;
+    private const KeyCode JumpKeyCode = KeyCode.Space;
 
     public event Action<float> HorizontalMovement;
     public event Action<bool> Jumping;
@@ -17,7 +17,7 @@ public class InputReader : MonoBehaviour
 
     private void JumpControl()
     {
-        if (Input.GetKeyDown(KeyCoder) )
+        if (Input.GetKeyDown(JumpKeyCode) )
         {
             Jumping?.Invoke(true);
         }

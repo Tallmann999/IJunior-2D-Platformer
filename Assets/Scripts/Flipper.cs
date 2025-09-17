@@ -1,8 +1,10 @@
 using UnityEngine;
 
-public class Rotation : MonoBehaviour
+public class Flipper : MonoBehaviour
 {
-    public void RotationInspector(float direction)
+    private float _rotationAngle = 180;
+
+    public void Flip(float direction)
     {
         if (direction > 0)
         {
@@ -13,7 +15,7 @@ public class Rotation : MonoBehaviour
         else
         {
             Quaternion rotation = transform.rotation;
-            rotation.y = 180;
+            rotation.y = _rotationAngle;
             transform.rotation = rotation;
         }
     }

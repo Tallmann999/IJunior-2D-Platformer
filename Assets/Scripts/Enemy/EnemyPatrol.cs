@@ -3,36 +3,24 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private Transform _pathTarget;
-    [SerializeField] private Transform[] _points;
-    [SerializeField] private float _movingSpeed = 2f;
+    [SerializeField] private float _arrivalThreshold = 0.1f; 
+    [SerializeField] private float _waitTime = 0.8f; 
 
-    private int _currentPointIndex;
-    private EnemyMover _enemyMover;
+    private Transform[] _points;
+    private int _currentPointIndex = -1;
+
+    public float WaitingTime => _waitTime;
+    public float ArrivalThreshold => _arrivalThreshold;
+
+    public bool HasPoints => _points != null && _points.Length > 0;
 
     private void Awake()
     {
-        _enemyMover = GetComponent<EnemyMover>();
+        InitPoints();
     }
 
-    private void Start()
-    {
-        InitPoint();
-        SetNextTarget();
-    }
-
-    private void Update()
-    {
-        MoveToPoints();
-
-        if (transform.position == _points[_currentPointIndex].position)
-        {
-            _currentPointIndex = (_currentPointIndex + 1) % _points.Length;
-            SetNextTarget();
-        }
-    }
-
-    [ContextMenu("Refresh Allay")]
-    private void InitPoint()
+    [ContextMenu("Refresh Array")]
+    private void InitPoints()
     {
         _points = new Transform[_pathTarget.childCount];
 
@@ -42,20 +30,25 @@ public class EnemyPatrol : MonoBehaviour
         }
     }
 
-    private void SetNextTarget()
+    public Transform GetCurrentTarget()
     {
-        if (_points.Length > 0 && _enemyMover != null)
+        if (!HasPoints)
+            return null;
+
+        if (_currentPointIndex < 0)
         {
-            _enemyMover.SetTarget(_points[_currentPointIndex]);
+            _currentPointIndex = 0;
         }
+
+        return _points[_currentPointIndex];
     }
 
-    private void MoveToPoints()
+    public Transform AdvanceToNext()
     {
-        if (_points.Length == 0) return;
+        if (!HasPoints)
+            return null;
 
-        Transform target = _points[_currentPointIndex];
-        transform.position = Vector3.MoveTowards(transform.position, target.position,
-            _movingSpeed * Time.deltaTime);
+        _currentPointIndex = ++_currentPointIndex % _points.Length;
+        return _points[_currentPointIndex];
     }
 }
