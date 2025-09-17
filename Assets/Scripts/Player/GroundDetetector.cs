@@ -10,7 +10,7 @@ public class GroundDetector : MonoBehaviour
     private bool _wasGrounded;
     public event Action<bool> GroundedChanged;
 
-    private void Update()
+    private void FixedUpdate()
     {
         CheckGround();
     }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private float _speedMovement = 8f;
@@ -18,8 +19,9 @@ public class PlayerMover : MonoBehaviour
 
     public void SetHorizontalDirection(float horizontalDirection)
     {
+        float minMovingValue = 0.1f;
         _horizontalInput = horizontalDirection;
-        _isMoving = Mathf.Abs(horizontalDirection) > 0.1f;
+        _isMoving = Mathf.Abs(horizontalDirection) > minMovingValue;
     }
 
     public void Move()

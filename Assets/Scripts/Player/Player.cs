@@ -3,7 +3,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(InputReader))]
 [RequireComponent(typeof(Flipper))]
-[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerAnimation))]
 [RequireComponent(typeof(PlayerMover))]
 public class Player : MonoBehaviour
@@ -103,7 +102,9 @@ public class Player : MonoBehaviour
 
     private void UpdateRotation()
     {
-        if (_flipper != null && Mathf.Abs(_horizontalInput) > 0.1f)
+        float flipThreshold = 0.1f;
+
+        if (_flipper != null && Mathf.Abs(_horizontalInput) > flipThreshold)
         {
             _flipper.Flip(_horizontalInput);
         }

@@ -7,7 +7,7 @@ public class EnemyMover : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private Flipper _flipper;
-    private Transform _target;
+    private Transform _target;   
 
     private void Awake()
     {
@@ -33,6 +33,8 @@ public class EnemyMover : MonoBehaviour
 
     private void Move()
     {
+         float flipThreshold = 0.05f;
+
         if (_target == null) return;
 
         Vector2 currentPosition = _rigidbody.position;
@@ -43,7 +45,7 @@ public class EnemyMover : MonoBehaviour
 
         float distanceX = targetPosition.x - currentPosition.x;
 
-        if (_flipper != null && Mathf.Abs(distanceX) > 0.05f)
+        if (_flipper != null && Mathf.Abs(distanceX) > flipThreshold)
             _flipper.Flip(distanceX);
     }
 }
