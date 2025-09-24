@@ -181,7 +181,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 74
-        y: 0
+        y: 1
         width: 37
         height: 41
       alignment: 0
@@ -224,7 +224,7 @@ TextureImporter:
       name: Jump-All-Sheet_3
       rect:
         serializedVersion: 2
-        x: 196
+        x: 197
         y: 1
         width: 35
         height: 61
@@ -246,8 +246,8 @@ TextureImporter:
       name: Jump-All-Sheet_4
       rect:
         serializedVersion: 2
-        x: 260
-        y: 3
+        x: 261
+        y: 2
         width: 35
         height: 59
       alignment: 0
@@ -269,7 +269,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 326
-        y: 4
+        y: 3
         width: 33
         height: 57
       alignment: 0
@@ -312,7 +312,7 @@ TextureImporter:
       name: Jump-All-Sheet_7
       rect:
         serializedVersion: 2
-        x: 456
+        x: 457
         y: 1
         width: 31
         height: 57

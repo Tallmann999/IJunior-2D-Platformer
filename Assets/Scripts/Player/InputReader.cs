@@ -8,11 +8,21 @@ public class InputReader : MonoBehaviour
 
     public event Action<float> HorizontalMovement;
     public event Action<bool> Jumping;
+    public event Action<bool> Attacking;
 
     private void Update()
     {
         MoveControl();
         JumpControl();
+        AttackControl();
+    }
+
+    private void AttackControl()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Attacking?.Invoke(true);
+        }
     }
 
     private void JumpControl()

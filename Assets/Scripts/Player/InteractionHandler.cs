@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Bag))]
 public class InteractionHandler : MonoBehaviour
 {
+    // здесь скорее всего прописать логику взаимодействия 
     private Bag _currentBag;
 
     private void Awake()

@@ -45,7 +45,9 @@ public class Enemy : MonoBehaviour
         }
 
         Vector3 direction = (_currentTarget.position - transform.position);
-
+        // здесь нужно прописывать переключение на цель  и преследование за игроком. Через скрипт FolowerDetector
+        // потом работа с AttackDetector который выявляет что персонаж попадает в коллайдер EnemyAttacker атакует его 
+        // и активизируется анимация атаки 
         float sqrDistance = direction.sqrMagnitude;
         float threshold = _enemyPatrol.ArrivalThreshold;
         float multiplicationThreshold = threshold * threshold;

@@ -8,6 +8,7 @@ public class GroundDetector : MonoBehaviour
 
     private RaycastHit2D[] _raycastHit = new RaycastHit2D[5];
     private bool _wasGrounded;
+
     public event Action<bool> GroundedChanged;
 
     private void FixedUpdate()

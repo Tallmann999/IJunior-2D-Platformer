@@ -29,4 +29,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         _animator.SetTrigger(PlayerAnimatorData.Params.Jump);
     }
+    public void TriggerAttack()
+    {
+        _animator.SetTrigger(PlayerAnimatorData.Params.Attack);
+    }
 }
