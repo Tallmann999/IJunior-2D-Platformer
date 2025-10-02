@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -7,31 +8,48 @@ using UnityEngine;
 [RequireComponent(typeof(Flipper))]
 [RequireComponent(typeof(PlayerAnimation))]
 [RequireComponent(typeof(PlayerMover))]
+[RequireComponent(typeof(PlayerNeeds))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private GroundDetector _groundDetector;
-    //[SerializeField] private AttackDetector _attackDetector;
 
     private PlayerAnimation _playerAnimation;
     private PlayerAttacker _playerAttacker;
+    private PlayerNeeds _playerNeeds;
+    private PlayerMover _playerMover;
     private InputReader _inputReader;
     private Flipper _flipper;
-    private PlayerMover _playerMover;
+    private Coroutine _currentCoroutine;
+    private WaitForSeconds _waintingTime;
+
+    private float _waitingTimer = 2f;
     private float _horizontalInput;
     private bool _isGrounded;
+    private bool _haveAttack;
+    private bool _isDead;
 
-    private void Awake()
-    {
-        _playerAnimation = GetComponent<PlayerAnimation>();
-        _playerMover = GetComponent<PlayerMover>();
-        _inputReader = GetComponent<InputReader>();
-        _flipper = GetComponent<Flipper>();
-        _playerAttacker = GetComponent<PlayerAttacker>();
-    }
+    //public Action<bool> OnDie { get; private set; }
 
     private void OnEnable()
     {
         SubscribeToEvents();
+    }
+
+    private void Awake()
+    {
+        _playerAnimation = GetComponent<PlayerAnimation>();
+        _playerAttacker = GetComponent<PlayerAttacker>();
+        _playerMover = GetComponent<PlayerMover>();
+        _inputReader = GetComponent<InputReader>();
+        _playerNeeds = GetComponent<PlayerNeeds>();
+        _flipper = GetComponent<Flipper>();
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateAnimations();
+        UpdateRotation();
+        _playerMover.Move();
     }
 
     private void OnDisable()
@@ -39,25 +57,18 @@ public class Player : MonoBehaviour
         UnsubscribeFromEvents();
     }
 
-    private void Update()
-    {
-        UpdateAnimations();
-        UpdateRotation();
-    }
-
-    private void FixedUpdate()
-    {
-        _playerMover.Move();
-    }
-
     private void SubscribeToEvents()
     {
+        _waintingTime = new WaitForSeconds(_waitingTimer);
+
         if (_inputReader != null)
         {
+            _playerAttacker.Attacked += OnAttack;
             _inputReader.HorizontalMovement += OnHorizontalMovement;
             _inputReader.Jumping += OnJumping;
             _inputReader.Attacking += OnAttacking;
-            
+            _playerNeeds.Hit += OnHit;
+            _playerNeeds.Die += OnDead;
         }
 
         if (_groundDetector != null)
@@ -65,20 +76,63 @@ public class Player : MonoBehaviour
             _groundDetector.GroundedChanged += OnGroundedChanged;
         }
     }
+    private void OnDead(bool IsDie)
+    {
+        if (IsDie && !_isDead)
+        {
+            _isDead = true;
+
+            if (_currentCoroutine != null)
+            {
+                StopCoroutine(_currentCoroutine);
+            }
+
+            _playerMover.Stop();
+            _playerAnimation.TriggerDie();
+            StartCoroutine(OnDie());
+        }
+    }
+
+    private IEnumerator OnDie()
+    {
+
+        yield return new WaitForSeconds(4f);
+        Destroy(gameObject);
+    }
+
+    public void OnHit()
+    {
+        if (_isDead)
+            return;
+
+        if (_currentCoroutine != null)
+        {
+            StopCoroutine(_currentCoroutine);
+        }
+
+        _currentCoroutine = StartCoroutine(OnHitActivation());
+    }
+
+    private IEnumerator OnHitActivation()
+    {
+        _playerAnimation.TriggerHit();
+        _playerMover.Stop();
+        yield return _waintingTime;
+    }
 
     private void UnsubscribeFromEvents()
     {
         if (_inputReader != null)
         {
+            _playerAttacker.Attacked -= OnAttack;
             _inputReader.HorizontalMovement -= OnHorizontalMovement;
             _inputReader.Jumping -= OnJumping;
             _inputReader.Attacking -= OnAttacking;
+            _playerNeeds.Hit -= OnHit;
+            _playerNeeds.Die -= OnDead;
+
         }
 
-        //if(_attackDetector!=null)
-        //{
-        //    _attackDetector.Attacked = 
-        //}
 
         if (_groundDetector != null)
         {
@@ -86,21 +140,36 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnAttack(bool haveAttack)
+    {
+        _haveAttack = haveAttack;
+
+    }
+
     private void OnHorizontalMovement(float horizontalDirection)
     {
-        _horizontalInput = horizontalDirection;
-        _playerMover.SetHorizontalDirection(horizontalDirection);
+        if (!_isDead)
+        {
+            _horizontalInput = horizontalDirection;
+            _playerMover.SetHorizontalDirection(horizontalDirection);
+        }
     }
+
+    //private void  OnAttack(bool haveAttack)
+    //{
+    //    _haveAttack= haveAttack;
+    //}
 
     private void OnAttacking(bool isAttack)
     {
+        Debug.Log($"атака кнопка {isAttack}, атака Попадание в тригер {_haveAttack}");
         if (isAttack)
         {
-            _playerAnimation.TriggerAttack();
-            Debug.Log("Анимация работает");
-            _playerAttacker.Attack();
+            StartCoroutine(AttackSequence(isAttack));
         }
+
     }
+
 
     private void OnJumping(bool shouldJump)
     {
@@ -131,5 +200,20 @@ public class Player : MonoBehaviour
         {
             _flipper.Flip(_horizontalInput);
         }
+    }
+
+    private IEnumerator AttackSequence(bool haveAttack)
+    {
+        if (haveAttack && !_haveAttack)
+        {
+            _haveAttack = true;
+            _playerMover.Stop();
+            _playerAnimation.TriggerAttack();
+            yield return new WaitForSeconds(0.5f);
+
+            _playerAttacker.AttackCommand();
+            _haveAttack = false;
+        }
+
     }
 }

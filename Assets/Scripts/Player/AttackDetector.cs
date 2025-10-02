@@ -3,55 +3,37 @@ using UnityEngine;
 
 public class AttackDetector : MonoBehaviour
 {
-   //[] private LayerMask _targetLayer;
+    [SerializeField] private LayerMask _targetMask;
 
     public event Action<IDamageble> TargetDetected;
+    public event Action<IDamageble> TargetLost;
 
-    //  здесь мы отпределяем 
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if (collision.TryGetComponent(out IDamageble damageble))
-    //    {
-    //        TargetDetected?.Invoke(damageble); 
-    //    }
-    //}
-
-    private void FixedUpdate()
+    private void OnTriggerStay2D(Collider2D other)
     {
-        CheckForTargets();
-    }
+        if (!IsInLayerMask(other.gameObject.layer)) 
+            return;
 
-    private void CheckForTargets()
-    {
-        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, 3f);
-
-        foreach (Collider2D target in targets)
+        if (other.TryGetComponent(out IDamageble damageble))
         {
-            if (target.TryGetComponent(out IDamageble damageble))
-            {
-                TargetDetected?.Invoke(damageble);
-            }
+            TargetDetected?.Invoke(damageble);
+            Debug.Log("Цель вошла в зону: " + damageble);
         }
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.yellow;
-    //    Gizmos.DrawSphere(transform.position,2f);
-    //}
-    //// Метод для ручной проверки
-    //public bool CheckForTargets()
-    //{
-    //    Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, 0.5f, _targetLayer);
-    //    foreach (Collider2D target in targets)
-    //    {
-    //        if (target.TryGetComponent(out IDamageble damageble))
-    //        {
-    //            TargetDetected?.Invoke(damageble);
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!IsInLayerMask(other.gameObject.layer))
+            return;
 
+        if (other.TryGetComponent(out IDamageble damageble))
+        {
+            TargetLost?.Invoke(damageble);
+            Debug.Log("Цель покинула зону: " + damageble);
+        }
+    }
+
+    private bool IsInLayerMask(int layer)
+    {
+        return (_targetMask.value & (1 << layer)) != 0;
+    }
 }

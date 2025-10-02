@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover : MonoBehaviour
@@ -22,6 +23,12 @@ public class PlayerMover : MonoBehaviour
         float minMovingValue = 0.1f;
         _horizontalInput = horizontalDirection;
         _isMoving = Mathf.Abs(horizontalDirection) > minMovingValue;
+    }
+
+    public void Stop()
+    {
+        _rigidbody2D.linearVelocity = Vector2.zero;
+        _isMoving = false;  
     }
 
     public void Move()

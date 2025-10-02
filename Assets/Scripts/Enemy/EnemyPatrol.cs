@@ -42,7 +42,7 @@ public class EnemyPatrol : MonoBehaviour
 
         return _points[_currentPointIndex];
     }
-
+   
     public Transform AdvanceToNext()
     {
         if (!HasPoints)

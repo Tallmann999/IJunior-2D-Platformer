@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -7,7 +8,8 @@ public class EnemyMover : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private Flipper _flipper;
-    private Transform _target;   
+    private Transform _target;
+    public event Action<float> HorizontalMovement;
 
     private void Awake()
     {
@@ -29,7 +31,9 @@ public class EnemyMover : MonoBehaviour
     {
         _target = null;
         _rigidbody.linearVelocity = Vector2.zero;
+        HorizontalMovement?.Invoke(0f); 
     }
+
 
     private void Move()
     {
@@ -39,13 +43,33 @@ public class EnemyMover : MonoBehaviour
 
         Vector2 currentPosition = _rigidbody.position;
         Vector2 targetPosition = _target.position;
-        Vector2 nextPosition = Vector2.MoveTowards(currentPosition, targetPosition, _movementSpeed * Time.fixedDeltaTime);
 
-        _rigidbody.MovePosition(nextPosition);
+        Vector2 direction = (targetPosition - currentPosition).normalized;
+        Vector2 newVelocity = direction * _movementSpeed;
+
+        _rigidbody.linearVelocity = newVelocity;
 
         float distanceX = targetPosition.x - currentPosition.x;
 
         if (_flipper != null && Mathf.Abs(distanceX) > flipThreshold)
             _flipper.Flip(distanceX);
+
+        HorizontalMovement?.Invoke(newVelocity.x);
+
+        //Vector2 currentPosition = _rigidbody.position;
+        //Vector2 targetPosition = _target.position;
+        //Vector2 nextPosition = Vector2.MoveTowards(currentPosition, targetPosition, _movementSpeed * Time.fixedDeltaTime);
+
+        //_rigidbody.MovePosition(nextPosition);
+
+        //float distanceX = targetPosition.x - currentPosition.x;
+
+        //if (_flipper != null && Mathf.Abs(distanceX) > flipThreshold)
+        //    _flipper.Flip(distanceX);
+
+        //if (_rigidbody.linearVelocity.x!=0)
+        //{
+        //    HorizontalMovement?.Invoke(_rigidbody.linearVelocity.x);
+        //}
     }
 }
