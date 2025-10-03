@@ -10,7 +10,7 @@ public abstract class Attacker : MonoBehaviour
 
     protected float _lastAttackTime;
     protected IDamageble _currentTarget;
-    protected bool _haveAttack;// может атаковать
+    protected bool _haveAttack = false;// может атаковать
     public event Action<bool> Attacked;
 
     protected void OnEnable()
@@ -27,36 +27,22 @@ public abstract class Attacker : MonoBehaviour
 
     private void OnTargetDetected(IDamageble target)
     {
+        _currentTarget = target;
         _haveAttack = true;
         Attacked?.Invoke(_haveAttack);
-
-        _currentTarget = target;
     }
 
     private void OnTargetLost(IDamageble target)
     {
+        if (_currentTarget == target)
+            _currentTarget = null;
+
         _haveAttack = false;
         Attacked?.Invoke(_haveAttack);
 
-        if (_currentTarget == target)
-            _currentTarget = null;
     }
 
-
-    //protected void Attack()
-    //{
-    //    if (_currentTarget != null)
-    //    {
-
-    //        _currentTarget.TakeDamage(_attackDamage);
-    //        Debug.Log($"{gameObject.name} атаковал {_currentTarget} на {_attackDamage} урона");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Ќет цели в зоне атаки!");
-    //    }
-    //}
-     public void TryAttack()
+    public void TryAttack()
     {
         if (_currentTarget == null)
             return;
@@ -65,11 +51,10 @@ public abstract class Attacker : MonoBehaviour
             return;
 
         _lastAttackTime = Time.time;
-        _currentTarget.TakeDamage(_attackDamage);
-        Debug.Log($"{gameObject.name} атаковал {_currentTarget} на {_attackDamage} урона");
+
+        PerformAttack();
     }
 
-    // »гнорирует кулдаун (дл€ ручного вызова после анимации)
     public void ForceAttack()
     {
         if (_currentTarget != null)
@@ -78,10 +63,9 @@ public abstract class Attacker : MonoBehaviour
         }
     }
 
-    protected void PerformAttack()
+     protected void PerformAttack()
     {
         _currentTarget.TakeDamage(_attackDamage);
         Debug.Log($"{gameObject.name} атаковал {_currentTarget} на {_attackDamage} урона");
     }
-
 }

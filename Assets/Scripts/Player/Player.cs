@@ -105,19 +105,16 @@ public class Player : MonoBehaviour
         if (_isDead)
             return;
 
-        if (_currentCoroutine != null)
-        {
-            StopCoroutine(_currentCoroutine);
-        }
-
-        _currentCoroutine = StartCoroutine(OnHitActivation());
+        StartCoroutine(OnHitActivation());
     }
 
     private IEnumerator OnHitActivation()
     {
-        _playerAnimation.TriggerHit();
+        int index = 1;
+        Debug.Log("Анимация хит повторяеться  " + index++);
+        _playerAnimation.TriggerHit();// залипает анимация урона и не проходит урон 
         _playerMover.Stop();
-        yield return _waintingTime;
+        yield return new WaitForSeconds(0.1f);
     }
 
     private void UnsubscribeFromEvents()
@@ -160,7 +157,7 @@ public class Player : MonoBehaviour
     //    _haveAttack= haveAttack;
     //}
 
-    private void OnAttacking(bool isAttack)
+    private void OnAttacking(bool isAttack)// это ввод с кнопки буул
     {
         Debug.Log($"атака кнопка {isAttack}, атака Попадание в тригер {_haveAttack}");
         if (isAttack)
@@ -204,16 +201,18 @@ public class Player : MonoBehaviour
 
     private IEnumerator AttackSequence(bool haveAttack)
     {
-        if (haveAttack && !_haveAttack)
+        if (haveAttack)// это просто нажатие 
         {
-            _haveAttack = true;
             _playerMover.Stop();
             _playerAnimation.TriggerAttack();
             yield return new WaitForSeconds(0.5f);
 
-            //_playerAttacker.AttackCommand();
-            _haveAttack = false;
+            if (_haveAttack)
+            {
+                _playerAttacker.ForceAttack();
+                
+            }
+            //_haveAttack = false;
         }
-
     }
 }

@@ -54,11 +54,8 @@ public class Enemy : MonoBehaviour
 
     private void OnPlayerLost()
     {
-        //if (_isDead) // проверить будет ли преследовать игрока?????????
-        //    return;
-
         _isChasing = false;
-        _currentTarget = _enemyPatrol.GetCurrentTarget(); // возвращаемс€ к патрулю
+        _currentTarget = _enemyPatrol.GetCurrentTarget();
         _enemyMover.SetTarget(_currentTarget);
     }
 
@@ -77,7 +74,6 @@ public class Enemy : MonoBehaviour
         _enemyMover.HorizontalMovement -= OnHorizontalMove;
         _enemyNeeds.Hit -= OnHit;
         _enemyAttacker.Attacked -= Attack;
-
     }
 
     private void FixedUpdate()
@@ -116,24 +112,19 @@ public class Enemy : MonoBehaviour
         if (!_isDead)
         {
             _enemyMover.SetTarget(_currentTarget);
-
         }
-
     }
-
-
 
     private void Attack(bool haveAttack)
     {
         if (haveAttack)
-        {// «авести счЄтчик прошла атака или нет. или сделать корутину на удары колличество 
+        {
             Debug.Log("јтака врага производитс€");
-            _enemyAttacker.TryAttack();
+            //_enemyAttacker.TryAttack();
+            _enemyAttacker.ForceAttack();
             _enemyAnimation.TriggerAttack();
         }
     }
-
-
 
     private void OnHorizontalMove(float horizontalMove)
     {
