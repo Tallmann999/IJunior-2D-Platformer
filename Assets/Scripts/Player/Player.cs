@@ -211,7 +211,7 @@ public class Player : MonoBehaviour
             _playerAnimation.TriggerAttack();
             yield return new WaitForSeconds(0.5f);
 
-            _playerAttacker.AttackCommand();
+            //_playerAttacker.AttackCommand();
             _haveAttack = false;
         }
 
