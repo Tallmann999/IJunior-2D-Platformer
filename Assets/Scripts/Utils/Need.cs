@@ -10,19 +10,19 @@ public class Need
     public float RegenRate;
     public float DecayRate;
 
-
-    public void Add(float amount)
+    public void AddValue(float amount)
     {
-        CurrentValue = Mathf.Min(CurrentValue+amount,MaxValue);
+        CurrentValue = Mathf.Min(CurrentValue + amount, MaxValue);
     }
 
-    public void Decline(float amount)
-    { 
-        CurrentValue = Mathf.Max(CurrentValue-amount,MinValue);
+    public void DeclineValue(float amount)
+    {
+        CurrentValue = Mathf.Max(CurrentValue - amount, MinValue);
     }
 
     public float GetPercent()
     {
-        return CurrentValue/MaxValue;
+        return CurrentValue / MaxValue;
     }
-  }
+
+}

@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMover : MonoBehaviour
@@ -28,7 +27,7 @@ public class PlayerMover : MonoBehaviour
     public void Stop()
     {
         _rigidbody2D.linearVelocity = Vector2.zero;
-        _isMoving = false;  
+        _isMoving = false;
     }
 
     public void Move()

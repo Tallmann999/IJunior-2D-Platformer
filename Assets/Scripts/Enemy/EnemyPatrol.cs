@@ -3,15 +3,12 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour
 {
     [SerializeField] private Transform _pathTarget;
-    [SerializeField] private float _arrivalThreshold = 0.1f; 
-    [SerializeField] private float _waitTime = 0.8f; 
+    [SerializeField] private float _arrivalThreshold = 0.4f;
 
     private Transform[] _points;
     private int _currentPointIndex = -1;
 
-    public float WaitingTime => _waitTime;
     public float ArrivalThreshold => _arrivalThreshold;
-
     public bool HasPoints => _points != null && _points.Length > 0;
 
     private void Awake()
@@ -42,7 +39,7 @@ public class EnemyPatrol : MonoBehaviour
 
         return _points[_currentPointIndex];
     }
-   
+
     public Transform AdvanceToNext()
     {
         if (!HasPoints)

@@ -1,13 +1,9 @@
-using System;
 using System.Collections;
-using System.ComponentModel;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyMover))]
-[RequireComponent(typeof(EnemyPatrol))]
-[RequireComponent(typeof(EnemyAnimation))]
-[RequireComponent(typeof(EnemyAttacker))]
-[RequireComponent(typeof(EnemyDetector))]
+[RequireComponent(typeof(EnemyMover), typeof(EnemyNeeds))]
+[RequireComponent(typeof(EnemyPatrol), typeof(EnemyAnimation))]
+[RequireComponent(typeof(EnemyAttacker), typeof(EnemyDetector))]
 public class Enemy : MonoBehaviour
 {
     private EnemyMover _enemyMover;
@@ -16,37 +12,79 @@ public class Enemy : MonoBehaviour
     private EnemyAttacker _enemyAttacker;
     private EnemyDetector _enemyDetector;
     private EnemyNeeds _enemyNeeds;
+
     private Transform _currentTarget;
     private Coroutine _currentCoroutine;
-    private WaitForSeconds _waintingTime;
+    private WaitForSeconds _waintingTimer;
+    private WaitForSeconds _waintingTimeDie;
     private bool _isDead;
     private bool _isWaiting;
     private bool _isChasing;
     private float _waitingTimer = 2f;
+    private float _waitingTimerDie = 3f;
     private float _horizontalMover;
 
     private void OnEnable()
     {
-        _waitingTimer = _enemyPatrol.WaitingTime;
-        _waintingTime = new WaitForSeconds(_waitingTimer);
+        ActivationEvents();
 
         _currentTarget = _enemyPatrol.GetCurrentTarget();
         _enemyMover.SetTarget(_currentTarget);
-        _enemyMover.HorizontalMovement += OnHorizontalMove;
-        _enemyNeeds.Hit += OnHit;
-        _enemyNeeds.Die += OnDead;
-        _enemyAttacker.Attacked += Attack;
+    }
 
+    private void Awake()
+    {
+        _waintingTimer = new WaitForSeconds(_waitingTimer);
+        _waintingTimeDie = new WaitForSeconds(_waitingTimerDie);
+
+        _enemyMover = GetComponent<EnemyMover>();
+        _enemyPatrol = GetComponent<EnemyPatrol>();
+        _enemyNeeds = GetComponent<EnemyNeeds>();
+        _enemyAnimation = GetComponent<EnemyAnimation>();
+        _enemyAttacker = GetComponent<EnemyAttacker>();
+        _enemyDetector = GetComponent<EnemyDetector>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (_isDead)
+            return;
+
+        if (!_isChasing)
+        {
+            MoveToPoint();
+        }
+
+        UpdateAnimation();
+    }
+
+    private void OnDisable()
+    {
+        DeactivationEvents();
+    }
+
+    private void ActivationEvents()
+    {
+        _enemyMover.HorizontalMovement += OnHorizontalMove;
+        _enemyNeeds.Hit += OnHitActivator;
+        _enemyNeeds.Die += OnDieActivator;
+        _enemyAttacker.Attacked += OnAttackActivator;
         _enemyDetector.PlayerDetected += OnPlayerDetected;
         _enemyDetector.PlayerLost += OnPlayerLost;
+    }
 
+    private void DeactivationEvents()
+    {
+        _enemyMover.HorizontalMovement -= OnHorizontalMove;
+        _enemyNeeds.Hit -= OnHitActivator;
+        _enemyNeeds.Die -= OnDieActivator;
+        _enemyAttacker.Attacked -= OnAttackActivator;
+        _enemyDetector.PlayerDetected -= OnPlayerDetected;
+        _enemyDetector.PlayerLost -= OnPlayerLost;
     }
 
     private void OnPlayerDetected(Transform player)
     {
-        //if (_isDead) // проверить будет ли преследовать игрока?????????
-        //    return;
-       
         _isChasing = true;
         _currentTarget = player;
         _enemyMover.SetTarget(_currentTarget);
@@ -59,38 +97,7 @@ public class Enemy : MonoBehaviour
         _enemyMover.SetTarget(_currentTarget);
     }
 
-    private void Awake()
-    {
-        _enemyMover = GetComponent<EnemyMover>();
-        _enemyPatrol = GetComponent<EnemyPatrol>();
-        _enemyNeeds = GetComponent<EnemyNeeds>();
-        _enemyAnimation = GetComponent<EnemyAnimation>();
-        _enemyAttacker = GetComponent<EnemyAttacker>();
-        _enemyDetector = GetComponent<EnemyDetector>();
-    }
-
-    private void OnDisable()
-    {
-        _enemyMover.HorizontalMovement -= OnHorizontalMove;
-        _enemyNeeds.Hit -= OnHit;
-        _enemyAttacker.Attacked -= Attack;
-    }
-
-    private void FixedUpdate()
-    {
-        if (_isDead)
-            return;
-
-        if (!_isChasing)
-        {
-            MoveToPoint();
-
-        }
-
-        UpdateAnimation();
-    }
-
-    public void OnHit()
+    private void OnHitActivator()
     {
         if (_isDead)
             return;
@@ -100,30 +107,34 @@ public class Enemy : MonoBehaviour
             StopCoroutine(_currentCoroutine);
         }
 
-        _currentCoroutine = StartCoroutine(OnHitActivation());
+        _currentCoroutine = StartCoroutine(OnHit());
     }
 
-    private IEnumerator OnHitActivation()
+    private void OnDieActivator(bool IsDie)
     {
-        _enemyAnimation.TriggerHit();
-        _enemyMover.Stop();
-        yield return _waintingTime;
-
-        if (!_isDead)
+        if (IsDie && !_isDead)
         {
-            _enemyMover.SetTarget(_currentTarget);
+            _isDead = true;
+            _enemyMover.Die();
+            _enemyAnimation.TriggerDie();
+
+            if (_currentCoroutine != null)
+            {
+                StopCoroutine(_currentCoroutine);
+            }
+
+             StartCoroutine(OnDie());
         }
     }
 
-    private void Attack(bool haveAttack)
+    private void OnAttackActivator(bool haveAttack)
     {
-        if (haveAttack)
+        if (_currentCoroutine != null)
         {
-            Debug.Log("Атака врага производится");
-            //_enemyAttacker.TryAttack();
-            _enemyAttacker.ForceAttack();
-            _enemyAnimation.TriggerAttack();
+            StopCoroutine(_currentCoroutine);
         }
+
+        _currentCoroutine = StartCoroutine(OnAttack(haveAttack));
     }
 
     private void OnHorizontalMove(float horizontalMove)
@@ -155,56 +166,63 @@ public class Enemy : MonoBehaviour
         float threshold = _enemyPatrol.ArrivalThreshold;
         float multiplicationThreshold = threshold * threshold;
 
-        if (sqrDistance <= multiplicationThreshold)
+        if (sqrDistance <= multiplicationThreshold && !_isWaiting)
         {
-            //if (_currentCoroutine != null)
-            //{
-            //    StopCoroutine(_currentCoroutine);
-            //}
-
-            //_currentCoroutine = StartCoroutine(HeandleReacherPoint());
-            StartCoroutine(HeandleReacherPoint());
-        }
-    }
-
-    private void OnDead(bool IsDie)
-    {
-        if (IsDie && !_isDead)
-        {
-            _isDead = true;
+            _isWaiting = true;
 
             if (_currentCoroutine != null)
             {
                 StopCoroutine(_currentCoroutine);
             }
 
-            _enemyMover.Stop();
-            _enemyAnimation.TriggerDie();
-            StartCoroutine(OnDie());
+            _currentCoroutine = StartCoroutine(HeandleReacherPoint());
+        }
+    }
+
+    private IEnumerator OnAttack(bool haveAttack)
+    {
+        if (haveAttack)
+        {
+            _enemyAnimation.TriggerAttack();
+            yield return _waintingTimer;
+            _enemyAttacker.ForceAttack();
+        }
+    }
+
+    private IEnumerator OnHit()
+    {
+        _enemyAnimation.TriggerHit();
+        _enemyMover.Stop();
+        yield return _waintingTimer;
+
+        if (!_isDead)
+        {
+            _enemyMover.SetTarget(_currentTarget);
         }
     }
 
     private IEnumerator OnDie()
     {
-
-        yield return new WaitForSeconds(4f);
+        yield return _waintingTimeDie;
         Destroy(gameObject);
     }
 
     private IEnumerator HeandleReacherPoint()
     {
         if (_isDead)
+        {
             yield break;
+        }
 
         _isWaiting = true;
-        _enemyMover.Stop();
-        yield return _waintingTime;
+        yield return _waintingTimer;
 
         if (!_isDead)
         {
             _currentTarget = _enemyPatrol.AdvanceToNext();
             _enemyMover.SetTarget(_currentTarget);
         }
+
         _isWaiting = false;
     }
 }

@@ -1,20 +1,14 @@
-using System;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-[RequireComponent(typeof(InputReader))]
-[RequireComponent(typeof(PlayerAttacker))]
-[RequireComponent(typeof(Flipper))]
-[RequireComponent(typeof(PlayerAnimation))]
+[RequireComponent(typeof(InputReader), typeof(Flipper))]
+[RequireComponent(typeof(PlayerAnimation), typeof(PlayerNeeds))]
 [RequireComponent(typeof(PlayerMover))]
-[RequireComponent(typeof(PlayerNeeds))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private GroundDetector _groundDetector;
 
     private PlayerAnimation _playerAnimation;
-    private PlayerAttacker _playerAttacker;
     private PlayerNeeds _playerNeeds;
     private PlayerMover _playerMover;
     private InputReader _inputReader;
@@ -22,23 +16,21 @@ public class Player : MonoBehaviour
     private Coroutine _currentCoroutine;
     private WaitForSeconds _waintingTime;
 
-    private float _waitingTimer = 2f;
+    private float _waitingTimer = 3f;
     private float _horizontalInput;
     private bool _isGrounded;
-    private bool _haveAttack;
     private bool _isDead;
-
-    //public Action<bool> OnDie { get; private set; }
 
     private void OnEnable()
     {
         SubscribeToEvents();
+
+        _waintingTime = new WaitForSeconds(_waitingTimer);
     }
 
     private void Awake()
     {
         _playerAnimation = GetComponent<PlayerAnimation>();
-        _playerAttacker = GetComponent<PlayerAttacker>();
         _playerMover = GetComponent<PlayerMover>();
         _inputReader = GetComponent<InputReader>();
         _playerNeeds = GetComponent<PlayerNeeds>();
@@ -59,11 +51,8 @@ public class Player : MonoBehaviour
 
     private void SubscribeToEvents()
     {
-        _waintingTime = new WaitForSeconds(_waitingTimer);
-
         if (_inputReader != null)
         {
-            _playerAttacker.Attacked += OnAttack;
             _inputReader.HorizontalMovement += OnHorizontalMovement;
             _inputReader.Jumping += OnJumping;
             _inputReader.Attacking += OnAttacking;
@@ -76,6 +65,24 @@ public class Player : MonoBehaviour
             _groundDetector.GroundedChanged += OnGroundedChanged;
         }
     }
+
+    private void UnsubscribeFromEvents()
+    {
+        if (_inputReader != null)
+        {
+            _inputReader.HorizontalMovement -= OnHorizontalMovement;
+            _inputReader.Jumping -= OnJumping;
+            _inputReader.Attacking -= OnAttacking;
+            _playerNeeds.Hit -= OnHit;
+            _playerNeeds.Die -= OnDead;
+        }
+
+        if (_groundDetector != null)
+        {
+            _groundDetector.GroundedChanged -= OnGroundedChanged;
+        }
+    }
+
     private void OnDead(bool IsDie)
     {
         if (IsDie && !_isDead)
@@ -89,15 +96,8 @@ public class Player : MonoBehaviour
 
             _playerMover.Stop();
             _playerAnimation.TriggerDie();
-            StartCoroutine(OnDie());
+            _currentCoroutine = StartCoroutine(DieActivator());
         }
-    }
-
-    private IEnumerator OnDie()
-    {
-
-        yield return new WaitForSeconds(4f);
-        Destroy(gameObject);
     }
 
     public void OnHit()
@@ -105,42 +105,12 @@ public class Player : MonoBehaviour
         if (_isDead)
             return;
 
-        StartCoroutine(OnHitActivation());
-    }
-
-    private IEnumerator OnHitActivation()
-    {
-        int index = 1;
-        Debug.Log("Анимация хит повторяеться  " + index++);
-        _playerAnimation.TriggerHit();// залипает анимация урона и не проходит урон 
-        _playerMover.Stop();
-        yield return new WaitForSeconds(0.1f);
-    }
-
-    private void UnsubscribeFromEvents()
-    {
-        if (_inputReader != null)
+        if (_currentCoroutine != null)
         {
-            _playerAttacker.Attacked -= OnAttack;
-            _inputReader.HorizontalMovement -= OnHorizontalMovement;
-            _inputReader.Jumping -= OnJumping;
-            _inputReader.Attacking -= OnAttacking;
-            _playerNeeds.Hit -= OnHit;
-            _playerNeeds.Die -= OnDead;
-
+            StopCoroutine(_currentCoroutine);
         }
 
-
-        if (_groundDetector != null)
-        {
-            _groundDetector.GroundedChanged -= OnGroundedChanged;
-        }
-    }
-
-    private void OnAttack(bool haveAttack)
-    {
-        _haveAttack = haveAttack;
-
+        _currentCoroutine = StartCoroutine(HitActivator());
     }
 
     private void OnHorizontalMovement(float horizontalDirection)
@@ -152,21 +122,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    //private void  OnAttack(bool haveAttack)
-    //{
-    //    _haveAttack= haveAttack;
-    //}
-
-    private void OnAttacking(bool isAttack)// это ввод с кнопки буул
+    private void OnAttacking(bool isAttack)
     {
-        Debug.Log($"атака кнопка {isAttack}, атака Попадание в тригер {_haveAttack}");
-        if (isAttack)
+        if (_currentCoroutine != null)
         {
-            StartCoroutine(AttackSequence(isAttack));
+            StopCoroutine(_currentCoroutine);
         }
 
+        _currentCoroutine = StartCoroutine(AttackActivator(isAttack));
     }
-
 
     private void OnJumping(bool shouldJump)
     {
@@ -199,20 +163,26 @@ public class Player : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackSequence(bool haveAttack)
+    private IEnumerator HitActivator()
     {
-        if (haveAttack)// это просто нажатие 
+        _playerAnimation.TriggerHit();
+        _playerMover.Stop();
+        yield break;
+    }
+
+    private IEnumerator DieActivator()
+    {
+        yield return _waintingTime;
+        Destroy(gameObject);
+    }
+
+    private IEnumerator AttackActivator(bool haveAttack)
+    {
+        if (haveAttack)
         {
             _playerMover.Stop();
             _playerAnimation.TriggerAttack();
-            yield return new WaitForSeconds(0.5f);
-
-            if (_haveAttack)
-            {
-                _playerAttacker.ForceAttack();
-                
-            }
-            //_haveAttack = false;
+            yield break;
         }
     }
 }

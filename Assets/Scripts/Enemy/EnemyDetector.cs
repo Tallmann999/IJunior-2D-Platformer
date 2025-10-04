@@ -11,7 +11,6 @@ public class EnemyDetector : MonoBehaviour
         if (collision.TryGetComponent(out Player player))
         {
             PlayerDetected?.Invoke(player.transform);
-            Debug.Log("Игрок обнаружен!");
         }
     }
 
@@ -20,7 +19,6 @@ public class EnemyDetector : MonoBehaviour
         if (collision.TryGetComponent(out Player player))
         {
             PlayerLost?.Invoke();
-            Debug.Log("Игрок убежал!");
         }
     }
 }

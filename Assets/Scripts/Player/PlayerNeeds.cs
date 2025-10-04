@@ -5,29 +5,32 @@ public class PlayerNeeds : MonoBehaviour, IDamageble
 {
     [SerializeField] private Need _health;
 
+    private bool _isDie;
+
     public event Action Hit;
     public event Action<bool> Die;
-    private bool IsDie;
+
     public bool IsAlive => _health.CurrentValue > 0;
 
     private void Start()
     {
         _health.CurrentValue = _health.StartValue;
+    }
 
+    public void AddPotionHealth(int health)
+    {
+        _health.AddValue(health);
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log($" текущий уровень здоровья   {_health.CurrentValue}");
-        // можно сделать отсрочку по нанесению урона в 2 сеунды .
-        // чтоб при нажатии на клавишу мышки сразу не уходили все жизни
-        _health.Decline(damage);
+        _health.DeclineValue(damage);
         Hit?.Invoke();
 
         if (_health.CurrentValue <= 0)
         {
-            IsDie = true;
-            Die?.Invoke(IsDie);
+            _isDie = true;
+            Die?.Invoke(_isDie);
         }
     }
 }

@@ -1,46 +1,31 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyNeeds : MonoBehaviour,IDamageble
+public class EnemyNeeds : MonoBehaviour, IDamageble
 {
-    [SerializeField]private Need _health;
+    [SerializeField] private Need _health;
+
+    private bool _isDie;
 
     public event Action Hit;
     public event Action<bool> Die;
-    private bool IsDie;
+
     public bool IsAlive => _health.CurrentValue > 0;
 
     private void Start()
     {
         _health.CurrentValue = _health.StartValue;
-
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log($" текущий уровень здоровья   {_health.CurrentValue}");
         Hit?.Invoke();
-        // можно сделать отсрочку по нанесению урона в 2 сеунды .
-        // чтоб при нажатии на клавишу мышки сразу не уходили все жизни
-        _health.Decline(damage);
+        _health.DeclineValue(damage);
 
-        if (_health.CurrentValue<=0)
+        if (_health.CurrentValue <= 0)
         {
-            IsDie = true;
-            Die?.Invoke(IsDie);
+            _isDie = true;
+            Die?.Invoke(_isDie);
         }
-               
-            //StartCoroutine(OnDestroyActivator());
-        
     }
-
-    //private IEnumerator OnDestroyActivator()
-    //{
-       
-    //    yield return   new WaitForSeconds(20f);
-    //    //Destroy(gameObject);
-    //}
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -8,7 +8,10 @@ public class EnemyMover : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private Flipper _flipper;
+    private Vector2 _currentVelocity;
     private Transform _target;
+    private bool _isDead;
+
     public event Action<float> HorizontalMovement;
 
     private void Awake()
@@ -24,52 +27,45 @@ public class EnemyMover : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
+        if (_isDead)
+            return;
+
         _target = target;
     }
 
     public void Stop()
     {
         _target = null;
-        _rigidbody.linearVelocity = Vector2.zero;
-        HorizontalMovement?.Invoke(0f); 
+        _currentVelocity = Vector2.zero;
+        _rigidbody.linearVelocity = _currentVelocity;
+        HorizontalMovement?.Invoke(0f);
     }
 
+    public void Die()
+    {
+        _isDead = true;
+        Stop();
+        _rigidbody.bodyType = RigidbodyType2D.Static;
+    }
 
     private void Move()
     {
-         float flipThreshold = 0.05f;
+        float flipThreshold = 0.05f;
 
-        if (_target == null) return;
+        if (_isDead || _target == null)
+            return;
 
         Vector2 currentPosition = _rigidbody.position;
         Vector2 targetPosition = _target.position;
 
-        Vector2 direction = (targetPosition - currentPosition).normalized;
-        Vector2 newVelocity = direction * _movementSpeed;
-
-        _rigidbody.linearVelocity = newVelocity;
-
         float distanceX = targetPosition.x - currentPosition.x;
+        float directionX = Mathf.Sign(distanceX);
+        _currentVelocity = new Vector2(directionX * _movementSpeed, _rigidbody.linearVelocity.y);
+        _rigidbody.linearVelocity = _currentVelocity;
 
         if (_flipper != null && Mathf.Abs(distanceX) > flipThreshold)
             _flipper.Flip(distanceX);
 
-        HorizontalMovement?.Invoke(newVelocity.x);
-
-        //Vector2 currentPosition = _rigidbody.position;
-        //Vector2 targetPosition = _target.position;
-        //Vector2 nextPosition = Vector2.MoveTowards(currentPosition, targetPosition, _movementSpeed * Time.fixedDeltaTime);
-
-        //_rigidbody.MovePosition(nextPosition);
-
-        //float distanceX = targetPosition.x - currentPosition.x;
-
-        //if (_flipper != null && Mathf.Abs(distanceX) > flipThreshold)
-        //    _flipper.Flip(distanceX);
-
-        //if (_rigidbody.linearVelocity.x!=0)
-        //{
-        //    HorizontalMovement?.Invoke(_rigidbody.linearVelocity.x);
-        //}
+        HorizontalMovement?.Invoke(_currentVelocity.x);
     }
 }
