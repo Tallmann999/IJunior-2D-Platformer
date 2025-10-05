@@ -40,9 +40,4 @@ public class PlayerAttacker : Attacker
             PerformAttack();
         }
     }
-
-    protected override void PerformAttack()
-    {
-        base.PerformAttack();
-    }
 }

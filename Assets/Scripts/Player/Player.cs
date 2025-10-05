@@ -2,14 +2,14 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(InputReader), typeof(Flipper))]
-[RequireComponent(typeof(PlayerAnimation), typeof(PlayerNeeds))]
+[RequireComponent(typeof(PlayerAnimation), typeof(Health))]
 [RequireComponent(typeof(PlayerMover))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private GroundDetector _groundDetector;
 
     private PlayerAnimation _playerAnimation;
-    private PlayerNeeds _playerNeeds;
+    private Health _playerHealth;
     private PlayerMover _playerMover;
     private InputReader _inputReader;
     private Flipper _flipper;
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
         _playerAnimation = GetComponent<PlayerAnimation>();
         _playerMover = GetComponent<PlayerMover>();
         _inputReader = GetComponent<InputReader>();
-        _playerNeeds = GetComponent<PlayerNeeds>();
+        _playerHealth = GetComponent<Health>();
         _flipper = GetComponent<Flipper>();
     }
 
@@ -56,8 +56,8 @@ public class Player : MonoBehaviour
             _inputReader.HorizontalMovement += OnHorizontalMovement;
             _inputReader.Jumping += OnJumping;
             _inputReader.Attacking += OnAttacking;
-            _playerNeeds.Hit += OnHit;
-            _playerNeeds.Die += OnDead;
+            _playerHealth.Hit += OnHit;
+            _playerHealth.Die += OnDead;
         }
 
         if (_groundDetector != null)
@@ -73,8 +73,8 @@ public class Player : MonoBehaviour
             _inputReader.HorizontalMovement -= OnHorizontalMovement;
             _inputReader.Jumping -= OnJumping;
             _inputReader.Attacking -= OnAttacking;
-            _playerNeeds.Hit -= OnHit;
-            _playerNeeds.Die -= OnDead;
+            _playerHealth.Hit -= OnHit;
+            _playerHealth.Die -= OnDead;
         }
 
         if (_groundDetector != null)

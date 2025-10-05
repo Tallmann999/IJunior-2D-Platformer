@@ -1,7 +1,6 @@
 using UnityEngine;
 
- public interface IDamageble
+public interface IDamageble
 {
     void TakeDamage(int damage);
-    bool IsAlive { get; }
 }

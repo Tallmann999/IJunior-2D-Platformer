@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyMover), typeof(EnemyNeeds))]
+[RequireComponent(typeof(EnemyMover), typeof(Health))]
 [RequireComponent(typeof(EnemyPatrol), typeof(EnemyAnimation))]
 [RequireComponent(typeof(EnemyAttacker), typeof(EnemyDetector))]
 public class Enemy : MonoBehaviour
@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private EnemyAnimation _enemyAnimation;
     private EnemyAttacker _enemyAttacker;
     private EnemyDetector _enemyDetector;
-    private EnemyNeeds _enemyNeeds;
+    private Health _enemyHealth;
 
     private Transform _currentTarget;
     private Coroutine _currentCoroutine;
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
 
         _enemyMover = GetComponent<EnemyMover>();
         _enemyPatrol = GetComponent<EnemyPatrol>();
-        _enemyNeeds = GetComponent<EnemyNeeds>();
+        _enemyHealth = GetComponent<Health>();
         _enemyAnimation = GetComponent<EnemyAnimation>();
         _enemyAttacker = GetComponent<EnemyAttacker>();
         _enemyDetector = GetComponent<EnemyDetector>();
@@ -66,8 +66,8 @@ public class Enemy : MonoBehaviour
     private void ActivationEvents()
     {
         _enemyMover.HorizontalMovement += OnHorizontalMove;
-        _enemyNeeds.Hit += OnHitActivator;
-        _enemyNeeds.Die += OnDieActivator;
+        _enemyHealth.Hit += OnHitActivator;
+        _enemyHealth.Die += OnDieActivator;
         _enemyAttacker.Attacked += OnAttackActivator;
         _enemyDetector.PlayerDetected += OnPlayerDetected;
         _enemyDetector.PlayerLost += OnPlayerLost;
@@ -76,8 +76,8 @@ public class Enemy : MonoBehaviour
     private void DeactivationEvents()
     {
         _enemyMover.HorizontalMovement -= OnHorizontalMove;
-        _enemyNeeds.Hit -= OnHitActivator;
-        _enemyNeeds.Die -= OnDieActivator;
+        _enemyHealth.Hit -= OnHitActivator;
+        _enemyHealth.Die -= OnDieActivator;
         _enemyAttacker.Attacked -= OnAttackActivator;
         _enemyDetector.PlayerDetected -= OnPlayerDetected;
         _enemyDetector.PlayerLost -= OnPlayerLost;

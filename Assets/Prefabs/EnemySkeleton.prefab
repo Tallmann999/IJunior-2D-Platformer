@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 7729788650725134424}
   - component: {fileID: 8800816422630209318}
   - component: {fileID: 1873953006991691484}
-  - component: {fileID: 2878448614344665884}
+  - component: {fileID: 531612158386012431}
   - component: {fileID: 891560108205518664}
   - component: {fileID: 7842594277904042300}
   - component: {fileID: 6123301817437370039}
@@ -562,7 +562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c6ec1174060c949b4d720deaea106a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2878448614344665884
+--- !u!114 &531612158386012431
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -571,16 +571,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8574692058938155774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08c40f534aa201445a4e5bbade291d68, type: 3}
+  m_Script: {fileID: 11500000, guid: 9efda4173a456de49998882f6e58f12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health:
-    MaxValue: 50
-    MinValue: 0
-    StartValue: 50
-    CurrentValue: 50
-    RegenRate: 0
-    DecayRate: 0
+  MaxValue: 100
+  MinValue: 0
+  StartValue: 100
+  CurrentValue: 100
+  RegenRate: 0
+  DecayRate: 0
 --- !u!114 &891560108205518664
 MonoBehaviour:
   m_ObjectHideFlags: 0

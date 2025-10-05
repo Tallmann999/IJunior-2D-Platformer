@@ -24,7 +24,7 @@ public abstract class Attacker : MonoBehaviour
         AttackDetector.TargetLost -= OnTargetLost;
     }
 
-    protected virtual void PerformAttack()
+    protected  void PerformAttack()
     {
         if (AttackDetector == null)
             return;

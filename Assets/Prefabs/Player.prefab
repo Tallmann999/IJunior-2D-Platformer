@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 618483949669019476}
   - component: {fileID: 6679141935819883223}
   - component: {fileID: 6493377447761215418}
-  - component: {fileID: 8219764003642388576}
+  - component: {fileID: 1384756217207158566}
   - component: {fileID: 1470802249861284034}
   - component: {fileID: 7214330889079355883}
   - component: {fileID: 3581115151257747045}
@@ -253,7 +253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speedMovement: 8
   _jumpHeight: 8
---- !u!114 &8219764003642388576
+--- !u!114 &1384756217207158566
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -262,16 +262,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 487037235589906465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e40e993d97995494aa0b2efdaee452eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 9efda4173a456de49998882f6e58f12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health:
-    MaxValue: 100
-    MinValue: 0
-    StartValue: 100
-    CurrentValue: 100
-    RegenRate: 0
-    DecayRate: 0
+  MaxValue: 0
+  MinValue: 0
+  StartValue: 0
+  CurrentValue: 0
+  RegenRate: 0
+  DecayRate: 0
 --- !u!114 &1470802249861284034
 MonoBehaviour:
   m_ObjectHideFlags: 0

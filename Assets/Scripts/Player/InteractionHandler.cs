@@ -1,15 +1,15 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Bag),typeof(PlayerNeeds))]
+[RequireComponent(typeof(Bag),typeof(Health))]
 public class InteractionHandler : MonoBehaviour
 {
     private Bag _currentBag;
-    private PlayerNeeds _playerNeeds;
+    private Health _playerHealth;
 
     private void Awake()
     {
         _currentBag = GetComponent<Bag>();
-        _playerNeeds = GetComponent<PlayerNeeds>();
+        _playerHealth = GetComponent<Health>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,7 +22,7 @@ public class InteractionHandler : MonoBehaviour
 
         if (collision.TryGetComponent(out PotionHealth health))
         {
-            _playerNeeds.AddPotionHealth(health.HealthValue);
+            _playerHealth.AddValue(health.HealthValue);
             Destroy(collision.gameObject);
         }
     }
