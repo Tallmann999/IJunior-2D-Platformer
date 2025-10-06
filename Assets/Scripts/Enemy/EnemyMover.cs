@@ -44,6 +44,11 @@ public class EnemyMover : MonoBehaviour
         HorizontalMovement?.Invoke(0f);
     }
 
+    public void ContinumMove()
+    {
+        _isMoving = true;
+    }
+
     public void Die()
     {
         _isDead = true;

@@ -181,6 +181,7 @@ public class Enemy : MonoBehaviour
         if (!_isDead)
         {
             _enemyMover.SetTarget(_currentTarget);
+            _enemyMover.ContinumMove();
         }
     }
   
