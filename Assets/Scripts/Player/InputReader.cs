@@ -7,8 +7,8 @@ public class InputReader : MonoBehaviour
     private const KeyCode JumpKeyCode = KeyCode.Space;
 
     public event Action<float> HorizontalMovement;
-    public event Action<bool> Jumping;
-    public event Action<bool> Attacking;
+    public event Action Jumping;
+    public event Action Attacking;
 
     private void Update()
     {
@@ -21,7 +21,7 @@ public class InputReader : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Attacking?.Invoke(true);
+            Attacking?.Invoke();
         }
     }
 
@@ -29,7 +29,7 @@ public class InputReader : MonoBehaviour
     {
         if (Input.GetKeyDown(JumpKeyCode) )
         {
-            Jumping?.Invoke(true);
+            Jumping?.Invoke();
         }
     }
 

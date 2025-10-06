@@ -7,24 +7,26 @@ public abstract class Attacker : MonoBehaviour
     [SerializeField] protected int AttackDamage = 10;
     [SerializeField] protected float AttackCooldown = 1.5f;
 
-    protected float LastAttackTime;
     protected IDamageble CurrentTarget;
-    protected bool HaveAttack = false;
+    protected bool HaveAttack;
+
     public event Action<bool> Attacked;
 
     protected virtual void OnEnable()
     {
         AttackDetector.TargetDetected += OnTargetDetected;
         AttackDetector.TargetLost += OnTargetLost;
+        AttackDetector.TargetInRange += OnTargetInRange;
     }
 
     protected virtual void OnDisable()
     {
         AttackDetector.TargetDetected -= OnTargetDetected;
         AttackDetector.TargetLost -= OnTargetLost;
+        AttackDetector.TargetInRange -= OnTargetInRange;
     }
 
-    protected  void PerformAttack()
+    protected void PerformAttack()
     {
         if (AttackDetector == null)
             return;
@@ -32,22 +34,25 @@ public abstract class Attacker : MonoBehaviour
         if (CurrentTarget == null)
             return;
 
-            CurrentTarget.TakeDamage(AttackDamage);
+        CurrentTarget.TakeDamage(AttackDamage);
     }
 
-    public void ForceAttack()
+    protected void InvokeAttackEvent(bool value)
     {
-        if (CurrentTarget != null)
-        {
-            PerformAttack();
-        }
+        Attacked?.Invoke(value);
+    }
+
+    private void OnTargetInRange(IDamageble target)
+    {
+        HaveAttack = true;
+        InvokeAttackEvent(HaveAttack);
     }
 
     private void OnTargetDetected(IDamageble target)
     {
         CurrentTarget = target;
         HaveAttack = true;
-        Attacked?.Invoke(HaveAttack);
+        InvokeAttackEvent(HaveAttack);
     }
 
     private void OnTargetLost(IDamageble target)
@@ -56,6 +61,6 @@ public abstract class Attacker : MonoBehaviour
             CurrentTarget = null;
 
         HaveAttack = false;
-        Attacked?.Invoke(HaveAttack);
+        InvokeAttackEvent(HaveAttack);
     }
 }

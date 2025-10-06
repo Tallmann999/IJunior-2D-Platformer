@@ -105,12 +105,8 @@ public class Player : MonoBehaviour
         if (_isDead)
             return;
 
-        if (_currentCoroutine != null)
-        {
-            StopCoroutine(_currentCoroutine);
-        }
-
-        _currentCoroutine = StartCoroutine(HitActivator());
+        _playerAnimation.TriggerHit();
+        _playerMover.Stop();
     }
 
     private void OnHorizontalMovement(float horizontalDirection)
@@ -122,19 +118,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnAttacking(bool isAttack)
+    private void OnAttacking()
     {
-        if (_currentCoroutine != null)
-        {
-            StopCoroutine(_currentCoroutine);
-        }
-
-        _currentCoroutine = StartCoroutine(AttackActivator(isAttack));
+        _playerMover.Stop();
+        _playerAnimation.TriggerAttack();
     }
 
-    private void OnJumping(bool shouldJump)
+    private void OnJumping()
     {
-        if (shouldJump && _isGrounded)
+        if (_isGrounded)
         {
             _playerMover.Jump();
             _playerAnimation.TriggerJump();
@@ -163,26 +155,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private IEnumerator HitActivator()
-    {
-        _playerAnimation.TriggerHit();
-        _playerMover.Stop();
-        yield break;
-    }
-
     private IEnumerator DieActivator()
     {
         yield return _waintingTime;
         Destroy(gameObject);
-    }
-
-    private IEnumerator AttackActivator(bool haveAttack)
-    {
-        if (haveAttack)
-        {
-            _playerMover.Stop();
-            _playerAnimation.TriggerAttack();
-            yield break;
-        }
     }
 }

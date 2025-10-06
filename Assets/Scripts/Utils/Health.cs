@@ -22,8 +22,8 @@ public class Health : MonoBehaviour, IDamageble
 
     public void TakeDamage(int damage)
     {
-        DeclineValue(damage);
         Hit?.Invoke();
+        DeclineValue(damage);
 
         if (_currentValue <= 0)
         {
@@ -51,5 +51,15 @@ public class Health : MonoBehaviour, IDamageble
     public float GetPercent()
     {
         return _maxValue > 0 ? _currentValue / _maxValue : 0f;
+    }
+
+    public bool IsAlive()
+    {
+        if (!_isDie)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

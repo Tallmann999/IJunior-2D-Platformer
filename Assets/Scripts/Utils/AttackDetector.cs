@@ -7,6 +7,7 @@ public class AttackDetector : MonoBehaviour
 
     public event Action<IDamageble> TargetDetected;
     public event Action<IDamageble> TargetLost;
+    public event Action<IDamageble> TargetInRange;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -16,6 +17,17 @@ public class AttackDetector : MonoBehaviour
         if (other.TryGetComponent(out IDamageble damageble))
         {
             TargetDetected?.Invoke(damageble);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (!IsInLayerMask(other.gameObject.layer))
+            return;
+
+        if (other.TryGetComponent(out IDamageble damageble) && damageble.IsAlive())
+        {
+            TargetInRange?.Invoke(damageble);
         }
     }
 

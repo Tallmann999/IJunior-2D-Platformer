@@ -5,6 +5,7 @@ public class PlayerAttacker : Attacker
 {
     [SerializeField] private InputReader _inputReader;
 
+
     private void Awake()
     {
         _inputReader = GetComponent<InputReader>();
@@ -19,7 +20,7 @@ public class PlayerAttacker : Attacker
 
         if (_inputReader != null)
         {
-            _inputReader.Attacking += OnAttackStateChanged;
+            _inputReader.Attacking += OnAttackPressed;
         }
     }
 
@@ -27,17 +28,22 @@ public class PlayerAttacker : Attacker
     {
         if (_inputReader != null)
         {
-            _inputReader.Attacking -= OnAttackStateChanged;
+            _inputReader.Attacking -= OnAttackPressed;
         }
 
         base.OnDisable();
     }
 
-    private void OnAttackStateChanged(bool canAttack)
+    private void OnAttackPressed()
     {
-        if (canAttack)
+        if (HaveAttack && CurrentTarget != null)
         {
             PerformAttack();
+            InvokeAttackEvent(true);
+        }
+        else
+        {
+            Debug.Log("Нет цели для атаки");
         }
     }
 }

@@ -123,18 +123,17 @@ public class Enemy : MonoBehaviour
                 StopCoroutine(_currentCoroutine);
             }
 
-             StartCoroutine(OnDie());
+            StartCoroutine(OnDie());
         }
     }
 
     private void OnAttackActivator(bool haveAttack)
     {
-        if (_currentCoroutine != null)
+        if (haveAttack)
         {
-            StopCoroutine(_currentCoroutine);
+            _enemyAnimation.TriggerAttack();
+            _enemyAttacker.LoopAttack();
         }
-
-        _currentCoroutine = StartCoroutine(OnAttack(haveAttack));
     }
 
     private void OnHorizontalMove(float horizontalMove)
@@ -176,16 +175,6 @@ public class Enemy : MonoBehaviour
             }
 
             _currentCoroutine = StartCoroutine(HeandleReacherPoint());
-        }
-    }
-
-    private IEnumerator OnAttack(bool haveAttack)
-    {
-        if (haveAttack)
-        {
-            _enemyAnimation.TriggerAttack();
-            yield return _waintingTimer;
-            _enemyAttacker.ForceAttack();
         }
     }
 
