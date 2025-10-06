@@ -120,8 +120,8 @@ public class Player : MonoBehaviour
 
     private void OnAttacking()
     {
-        _playerMover.Stop();
         _playerAnimation.TriggerAttack();
+        _playerMover.Stop();
     }
 
     private void OnJumping()

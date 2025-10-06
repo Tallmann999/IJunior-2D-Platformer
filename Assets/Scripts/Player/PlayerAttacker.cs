@@ -5,7 +5,6 @@ public class PlayerAttacker : Attacker
 {
     [SerializeField] private InputReader _inputReader;
 
-
     private void Awake()
     {
         _inputReader = GetComponent<InputReader>();
@@ -40,10 +39,6 @@ public class PlayerAttacker : Attacker
         {
             PerformAttack();
             InvokeAttackEvent(true);
-        }
-        else
-        {
-            Debug.Log("Нет цели для атаки");
-        }
+        }       
     }
 }

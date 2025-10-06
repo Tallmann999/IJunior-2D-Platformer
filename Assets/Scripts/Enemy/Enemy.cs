@@ -102,12 +102,7 @@ public class Enemy : MonoBehaviour
         if (_isDead)
             return;
 
-        if (_currentCoroutine != null)
-        {
-            StopCoroutine(_currentCoroutine);
-        }
-
-        _currentCoroutine = StartCoroutine(OnHit());
+        OnHit();
     }
 
     private void OnDieActivator(bool IsDie)
@@ -178,18 +173,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private IEnumerator OnHit()
+    private void OnHit()
     {
         _enemyAnimation.TriggerHit();
         _enemyMover.Stop();
-        yield return _waintingTimer;
 
         if (!_isDead)
         {
             _enemyMover.SetTarget(_currentTarget);
         }
     }
-
+  
     private IEnumerator OnDie()
     {
         yield return _waintingTimeDie;

@@ -11,11 +11,13 @@ public class EnemyMover : MonoBehaviour
     private Vector2 _currentVelocity;
     private Transform _target;
     private bool _isDead;
+    private bool _isMoving;
 
     public event Action<float> HorizontalMovement;
 
     private void Awake()
     {
+        _isMoving = true;
         _rigidbody = GetComponent<Rigidbody2D>();
         _flipper = GetComponent<Flipper>();
     }
@@ -35,6 +37,7 @@ public class EnemyMover : MonoBehaviour
 
     public void Stop()
     {
+        _isMoving = false;
         _target = null;
         _currentVelocity = Vector2.zero;
         _rigidbody.linearVelocity = _currentVelocity;
@@ -50,22 +53,25 @@ public class EnemyMover : MonoBehaviour
 
     private void Move()
     {
-        float flipThreshold = 0.05f;
+        if (_isMoving)
+        {
+            float flipThreshold = 0.05f;
 
-        if (_isDead || _target == null)
-            return;
+            if (_isDead || _target == null)
+                return;
 
-        Vector2 currentPosition = _rigidbody.position;
-        Vector2 targetPosition = _target.position;
+            Vector2 currentPosition = _rigidbody.position;
+            Vector2 targetPosition = _target.position;
 
-        float distanceX = targetPosition.x - currentPosition.x;
-        float directionX = Mathf.Sign(distanceX);
-        _currentVelocity = new Vector2(directionX * _movementSpeed, _rigidbody.linearVelocity.y);
-        _rigidbody.linearVelocity = _currentVelocity;
+            float distanceX = targetPosition.x - currentPosition.x;
+            float directionX = Mathf.Sign(distanceX);
+            _currentVelocity = new Vector2(directionX * _movementSpeed, _rigidbody.linearVelocity.y);
+            _rigidbody.linearVelocity = _currentVelocity;
 
-        if (_flipper != null && Mathf.Abs(distanceX) > flipThreshold)
-            _flipper.Flip(distanceX);
+            if (_flipper != null && Mathf.Abs(distanceX) > flipThreshold)
+                _flipper.Flip(distanceX);
 
-        HorizontalMovement?.Invoke(_currentVelocity.x);
+            HorizontalMovement?.Invoke(_currentVelocity.x);
+        }
     }
 }
