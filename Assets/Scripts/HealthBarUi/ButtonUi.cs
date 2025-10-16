@@ -12,6 +12,7 @@ public class ButtonUi : MonoBehaviour
     {
         _button.onClick.AddListener(HandleButtonClick);
     }
+
     private void OnDisable()
     {
         _button.onClick.RemoveListener(HandleButtonClick);
