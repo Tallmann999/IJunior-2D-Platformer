@@ -14,6 +14,11 @@ public class Health : MonoBehaviour, IDamageble
 
     public event Action Hit;
     public event Action<bool> Die;
+    public event Action<float> CurrentHealth;
+
+    public float CurrentValue => _currentValue;
+    public float MaxValue => _maxValue;
+
 
     private void Awake()
     {
@@ -24,6 +29,7 @@ public class Health : MonoBehaviour, IDamageble
     {
         Hit?.Invoke();
         DeclineValue(damage);
+        CurrentHealth?.Invoke(_currentValue);
 
         if (_currentValue <= 0)
         {
@@ -38,6 +44,7 @@ public class Health : MonoBehaviour, IDamageble
             return;
 
         _currentValue = Mathf.Min(_currentValue + amount, _maxValue);
+        CurrentHealth?.Invoke(_currentValue);
     }
 
     public void DeclineValue(float amount)
