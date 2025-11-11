@@ -7,14 +7,15 @@ public class Cooldown : MonoBehaviour
     private float _lastResetTime;
     private bool _isReady = true;
 
+    public float Value => _value;
+
     private void Awake()
     {
-        _lastResetTime = -_value; // Сразу готов к использованию
+        _lastResetTime = -_value;
     }
 
     private void Update()
     {
-        // Автоматически обновляем статус готовности
         if (!_isReady && Time.time - _lastResetTime >= _value)
         {
             _isReady = true;

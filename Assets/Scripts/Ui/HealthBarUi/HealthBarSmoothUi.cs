@@ -8,11 +8,6 @@ public class HealthBarSmoothUi : HealthBarSliderUi
     private float _currentSliderValue;
     private Coroutine _currentCoroutine;
 
-    //private void Start()
-    //{
-    //    Slider.value = Health.GetPercent();
-    //}
-
     protected override void UpdateHealthView(float currentvalue)
     {
         _currentSliderValue = Slider.value;
